@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { messageSchema } from "@/schemas/messageSchema";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios, { all, AxiosError } from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
 import { toast } from "sonner";
@@ -50,6 +50,26 @@ const Page = () => {
     api: "/api/suggestMessages",
     initialCompletion: initialMessageString,
   });
+
+  const getAllUsers = async () => {
+    setGettingUser(true);
+    try {
+      const response = await axios.get("/api/getUsers");
+      setAllUsers(response.data.message);
+      toast.success("User fetched successfully..");
+    } catch (error) {
+      console.error("Error in fetching all users: ", error);
+      const axiosError = error as AxiosError<ApiResponse>;
+      const axiosErrorMessage = axiosError.response?.data.message;
+      toast.error(axiosErrorMessage);
+    } finally {
+      setGettingUser(false);
+    }
+  };
+
+  useEffect(() => {
+    getAllUsers();
+  }, []);
 
   const form = useForm<z.infer<typeof messageSchema>>({
     resolver: zodResolver(messageSchema),
@@ -88,22 +108,6 @@ const Page = () => {
     } catch (error) {
       console.error("Error fetching messages:", error);
       toast.error("Error while suggesting messages...");
-    }
-  };
-
-  const getAllUsers = async () => {
-    setGettingUser(true);
-    try {
-      const response = await axios.get("/api/getUsers");
-      setAllUsers(response.data.message);
-      toast.success("User fetched successfully..");
-    } catch (error) {
-      console.error("Error in fetching all users: ", error);
-      const axiosError = error as AxiosError<ApiResponse>;
-      const axiosErrorMessage = axiosError.response?.data.message;
-      toast.error(axiosErrorMessage);
-    } finally {
-      setGettingUser(false);
     }
   };
 
