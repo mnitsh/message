@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2, Slice } from "lucide-react";
+import { Loader2} from "lucide-react";
 import { useCompletion } from "@ai-sdk/react";
 import {
   Form,
@@ -24,7 +24,7 @@ import { toast } from "sonner";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-import Slider from "@/components/slider";
+import Slider from "@/components/Slider";
 
 const specialChar = "||";
 
@@ -120,7 +120,6 @@ const Page = () => {
           </h1>
           {/* Slider card */}
           <Slider
-            getAllUsers={getAllUsers}
             gettingUsers={gettingUsers}
             allUsers={allUsers}
           />
